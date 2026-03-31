@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Topaz Technologies — Research Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #F8F6F1;
+    --surface:  #FFFFFF;
+    --surface2: #F2EFE8;
+    --ink:      #1C1A16;
+    --ink2:     #5C5849;
+    --ink3:     #9C9888;
+    --rule:     #E2DDD4;
+    --gold:     #B8892A;
+    --gold2:    #F0C060;
+    --green:    #2D6A4F;
+    --green2:   #95D5B2;
+    --red:      #8B2020;
+    --red2:     #FFBABA;
+    --amber:    #92400E;
+    --amber2:   #FDE68A;
+    --blue:     #1E3A5F;
+    --blue2:    #BFDBFE;
+    --serif:    'Playfair Display', Georgia, serif;
+    --sans:     'DM Sans', sans-serif;
+    --mono:     'DM Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  .masthead {
+    background: var(--ink);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .masthead-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .gem {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+  .masthead h1 {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: 0.5px;
+  }
+  .masthead-divider {
+    width: 1px;
+    height: 14px;
+    background: #444;
+  }
+  .masthead-sub {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--ink3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .masthead-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink3);
+  }
+
+  .hero {
+    background: var(--ink);
+    padding: 28px 20px 32px;
+    border-bottom: 1px solid #333;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .hero h2 {
+    font-family: var(--serif);
+    font-size: 26px;
+    color: #FFFFFF;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+  .hero p {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.6;
+    max-width: 400px;
+  }
+
+  .main { padding: 20px 16px; max-width: 520px; margin: 0 auto; }
+
+  .input-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 8px;
+  }
+
+  .textarea-wrap {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .textarea-wrap:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,137,42,0.1);
+  }
+  .textarea-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--rule);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .textarea-header span {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--ink3);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .char-count {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink3);
+  }
+  textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 14px;
+    border: none;
+    outline: none;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--surface);
+    resize: vertical;
+    line-height: 1.6;
+  }
+  textarea::placeholder { color: var(--ink3); }
+
+  .examples-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .example-btn {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink2);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .example-btn:hover {
+    background: var(--ink);
+    color: #FFF;
+    border-color: var(--ink);
+  }
+
+  .analyse-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--ink);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .analyse-btn:hover { background: #2C2A24; }
+  .analyse-btn:active { transform: scale(0.99); }
+  .analyse-btn.loading {
+    background: #2C2A24;
+    color: var(--gold2);
+    pointer-events: none;
+  }
+  .analyse-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: -100%;
+    width: 100%; height: 2px;
+    background: var(--gold);
+  }
+  .analyse-btn.loading::after {
+    animation: progress 2s ease-in-out infinite;
+  }
+  @keyframes progress {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 20px;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--rule); }
+  .divider-txt {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink3);
+  }
+
+  .output-section {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .output-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .output-header {
+    background: var(--ink);
+    border-radius: 4px 4px 0 0;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .output-title {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: #FFFFFF;
+  }
+  .output-badge {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .field-block {
+    background: var(--surface);
+    border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    transition: background 0.15s;
+  }
+  .field-block:last-child { border-radius: 0 0 4px 4px; }
+  .field-block:hover { background: #FAFAF7; }
+
+  .field-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ink3);
+    min-width: 80px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+  .field-value {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .field-value.loading {
+    color: var(--ink3);
+    font-style: italic;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+  .signal-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.3px;
+  }
+  .sig-high    { background: var(--red2);   color: var(--red); }
+  .sig-medium  { background: var(--amber2); color: var(--amber); }
+  .sig-low     { background: var(--green2); color: var(--green); }
+  .sig-noise   { background: var(--surface2); color: var(--ink3); }
+
+  .action-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.3px;
+  }
+  .act-adjust  { background: var(--red2);   color: var(--red); }
+  .act-monitor { background: var(--amber2); color: var(--amber); }
+  .act-ignore  { background: var(--surface2); color: var(--ink3); }
+
+  .empty-state {
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+  .empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.3; }
+  .empty-txt { font-size: 13px; color: var(--ink3); line-height: 1.6; }
+
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    padding: 16px;
+    border-top: 1px solid var(--rule);
+  }
+  .footer-txt { font-size: 10px; color: var(--ink3); letter-spacing: 0.3px; }
+  .footer-txt span { color: var(--gold); font-weight: 600; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-left">
+    <svg class="gem" viewBox="0 0 24 24" fill="none">
+      <polygon points="12,2 20,8 20,16 12,22 4,16 4,8" fill="none" stroke="#B8892A" stroke-width="1.5"/>
+      <polygon points="12,2 20,8 12,10 4,8" fill="#B8892A" opacity="0.6"/>
+      <polygon points="12,10 20,8 20,16 12,22" fill="#F0C060" opacity="0.5"/>
+      <polygon points="12,10 4,8 4,16 12,22" fill="#B8892A" opacity="0.4"/>
+    </svg>
+    <h1>Topaz Technologies</h1>
+    <div class="masthead-divider"></div>
+    <span class="masthead-sub">Research Intelligence</span>
+  </div>
+  <span class="masthead-date" id="date-display"></span>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">AI Research Tool</div>
+  <h2>Paste any email<br>or article below</h2>
+  <p>Built for investment professionals. Paste a research note, email, or article and get a structured briefing in seconds.</p>
+</div>
+
+<div class="main">
+
+  <div class="input-label">Research Input</div>
+
+  <div class="textarea-wrap">
+    <div class="textarea-header">
+      <span>Paste email or article text</span>
+      <span class="char-count" id="char-count">0 chars</span>
+    </div>
+    <textarea id="input-text" placeholder="Paste the full text of an email, research note, or article here...&#10;&#10;Or try one of the examples below." oninput="updateCount()"></textarea>
+  </div>
+
+  <div class="examples-row">
+    <span style="font-size:11px;color:var(--ink3);padding-top:6px;">Try an example:</span>
+    <button class="example-btn" onclick="loadExample('iran')">Iran Scenarios</button>
+    <button class="example-btn" onclick="loadExample('fed')">Fed Rate Decision</button>
+    <button class="example-btn" onclick="loadExample('private')">Private Markets</button>
+  </div>
+
+  <button class="analyse-btn" id="analyse-btn" onclick="analyse()">
+    Analyse Research
+  </button>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-txt">CIO Summary</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="output-section" id="output-section">
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">◈</div>
+      <div class="empty-txt">Your structured summary will appear here.<br>Paste any research above and hit Analyse.</div>
+    </div>
+
+    <div id="result-cards" style="display:none;">
+      <div class="output-header">
+        <span class="output-title" id="result-title">Summary</span>
+        <span class="output-badge" id="result-badge">Processing</span>
+      </div>
+      <div class="field-block">
+        <div class="field-label">Core Idea</div>
+        <div class="field-value" id="f-core">—</div>
+      </div>
+      <div class="field-block">
+        <div class="field-label">Why It Matters</div>
+        <div class="field-value" id="f-why">—</div>
+      </div>
+      <div class="field-block">
+        <div class="field-label">Signal</div>
+        <div class="field-value" id="f-signal">—</div>
+      </div>
+      <div class="field-block">
+        <div class="field-label">Time Horizon</div>
+        <div class="field-value" id="f-horizon">—</div>
+      </div>
+      <div class="field-block">
+        <div class="field-label">Market Impact</div>
+        <div class="field-value" id="f-impact">—</div>
+      </div>
+      <div class="field-block">
+        <div class="field-label">Action</div>
+        <div class="field-value" id="f-action">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-txt">Built by <span>Topaz Technologies</span> &nbsp;•&nbsp; AI automation for finance &nbsp;•&nbsp; topaztech.co</div>
+  </div>
+
+</div>
+
+<script>
+const d = new Date();
+document.getElementById('date-display').textContent =
+  d.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'});
+
+function updateCount() {
+  const len = document.getElementById('input-text').value.length;
+  document.getElementById('char-count').textContent = `${len.toLocaleString()} chars`;
+}
+
+const EXAMPLES = {
+  iran: `Source: Citigroup (attributed) — Iran War Scenarios
+
+First Scenario:
+Over the next several weeks, the Administration's appetite for the conflict diminishes and the United States pulls out, declaring the operations a resounding success. As the US pulls out, the Iranian regime takes the opportunity to step back, take stock, consolidate, and rebuild. In tandem, Iran reduces pressures in the Strait of Hormuz, and the flow of shipping gradually resumes.
+
+In this scenario, the brent oil price would continue to cycle at roughly $90-110/barrel for the next month or so. But pressures would gradually ease, and oil prices would retreat to around $85/barrel on average through the second quarter, and then back to $70/barrel through the second half of the year.
+
+Second Scenario:
+The US ceases military operations over roughly the same timeline. However, in this case, the Iranians say "You're done, but we're not" and they continue to block traffic in the Strait. The upshot would be a very messy and uncertain three to six months, as the United States and its allies took steps to clear the Strait. This would perhaps require boots on the ground. It would also threaten more extensive damage to oil production infrastructure in the Middle East.
+
+In this scenario, brent prices would remain at or above $100/barrel through much of this year. Whether that would mean $100/barrel or $140/barrel would depend on the success of governments in deploying strategic reserves, the ability of the Saudis and the Emiratis to use ports in the Red Sea, the extent of damage to the underlying oil production infrastructure, and the ability of emerging laser-based technologies to blunt the threat from drones.`,
+
+  fed: `Source: Bloomberg — Federal Reserve Meeting Summary
+
+The Federal Reserve held interest rates steady at its March meeting, keeping the federal funds rate in the 5.25%-5.50% range. Fed Chair Jerome Powell signaled that the central bank remains in no rush to cut rates, citing persistent inflation in services and a resilient labor market.
+
+The Fed's updated dot plot showed most officials now expect only two rate cuts in 2025, down from three projected in December. Core PCE inflation remains above the 2% target at 2.8%.
+
+Powell noted that recent strength in employment data gives the Fed flexibility to be patient. Markets had been pricing in a June cut but odds have now shifted toward September as the first potential move.
+
+The 10-year Treasury yield rose 8 basis points following the announcement, reflecting the hawkish tilt. Equity markets sold off modestly with rate-sensitive sectors — utilities and real estate — leading declines. The dollar strengthened against major currencies.`,
+
+  private: `Source: Harvard Law School / ProMarket — Research by Ben Bates
+
+Why Private Market Funds Are Dangerous for Retail Investors
+
+From 2015 to 2024, retail private funds structured as business development companies reported average annualized returns of 7.6% per year with a Sharpe Ratio of 1.12 versus 0.65 for the public stock market. However the reported volatility appears systematically understated.
+
+Public BDC market price-based returns show 4.3 times higher volatility than their NAV-reported returns. Synthetic BDC comparisons show 1.2 to 5.5 times higher volatility than reported figures.
+
+Additionally, private BDCs available only to accredited investors outperform non-traded BDCs open to retail investors by approximately 0.6 percentage points per quarter — roughly 2.4 percentage points annually. This is consistent with adverse selection: less wealthy investors are offered inferior products.
+
+The Trump administration is pushing to expand private market access into retail retirement accounts, creating regulatory risk. The SEC may act on valuation disclosure requirements.`
+};
+
+function loadExample(key) {
+  document.getElementById('input-text').value = EXAMPLES[key];
+  updateCount();
+  document.getElementById('input-text').focus();
+}
+
+async function analyse() {
+  const text = document.getElementById('input-text').value.trim();
+  if (!text || text.length < 50) {
+    alert('Please paste some research content first.');
+    return;
+  }
+
+  const btn = document.getElementById('analyse-btn');
+  btn.classList.add('loading');
+  btn.textContent = 'Analysing...';
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('result-cards').style.display = 'block';
+  document.getElementById('output-section').classList.add('visible');
+
+  const fields = ['core','why','signal','horizon','impact','action'];
+  fields.forEach(f => {
+    const el = document.getElementById(`f-${f}`);
+    el.className = 'field-value loading';
+    el.innerHTML = 'Analysing...';
+  });
+  document.getElementById('result-title').textContent = 'Processing...';
+  document.getElementById('result-badge').textContent = 'AI';
+
+  try {
+    const response = await fetch('/api/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+
+    const data = await response.json();
+    const raw = data.content?.[0]?.text || '';
+
+    let result;
+    try {
+      result = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    } catch(e) {
+      throw new Error('Could not parse response');
+    }
+
+    document.getElementById('result-title').textContent = result.title || 'Research Summary';
+
+    const sig = result.signal || 'Medium';
+    const sigClass = { High: 'sig-high', Medium: 'sig-medium', Low: 'sig-low', Noise: 'sig-noise' }[sig] || 'sig-medium';
+    document.getElementById('result-badge').textContent = sig + ' Signal';
+
+    document.getElementById('f-core').className = 'field-value';
+    document.getElementById('f-core').textContent = result.core_idea || '—';
+
+    document.getElementById('f-why').className = 'field-value';
+    document.getElementById('f-why').textContent = result.why_it_matters || '—';
+
+    document.getElementById('f-signal').className = 'field-value';
+    document.getElementById('f-signal').innerHTML = `<span class="signal-badge ${sigClass}">${sig}</span> &nbsp;${result.signal_reason || ''}`;
+
+    document.getElementById('f-horizon').className = 'field-value';
+    document.getElementById('f-horizon').textContent = result.time_horizon || '—';
+
+    document.getElementById('f-impact').className = 'field-value';
+    document.getElementById('f-impact').textContent = result.market_impact || '—';
+
+    const act = result.action || 'Monitor';
+    const actClass = { 'Adjust Positioning': 'act-adjust', Monitor: 'act-monitor', Ignore: 'act-ignore' }[act] || 'act-monitor';
+    document.getElementById('f-action').className = 'field-value';
+    document.getElementById('f-action').innerHTML = `<span class="action-badge ${actClass}">${act}</span> &nbsp;${result.action_detail || ''}`;
+
+  } catch(err) {
+    fields.forEach(f => {
+      document.getElementById(`f-${f}`).className = 'field-value';
+    });
+    document.getElementById('f-core').textContent = 'Something went wrong. Please try again.';
+    document.getElementById('result-title').textContent = 'Error';
+    document.getElementById('result-badge').textContent = '—';
+  }
+
+  btn.classList.remove('loading');
+  btn.textContent = 'Analyse Research';
+  document.getElementById('output-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
